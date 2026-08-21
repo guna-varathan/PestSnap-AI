@@ -475,11 +475,14 @@ button:focus-visible {
 
 @media (max-width: 650px) {
     .annotation-controls {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .annotation-controls .btn {
-        width: 100%;
+        flex: 0 1 auto;
+        width: auto;
+        padding: 8px 12px;
+        min-height: 40px;
     }
 }
 
@@ -499,11 +502,14 @@ button:focus-visible {
 
 @media (max-width: 650px) {
     .photo-management-actions {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .photo-management-actions .btn {
-        width: 100%;
+        flex: 0 1 auto;
+        width: auto;
+        padding: 8px 12px;
+        min-height: 40px;
     }
 }
 
