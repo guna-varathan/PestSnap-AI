@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pest and Facility Inspection Assistant">
+    <title>PestSnap AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main class="app-container">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+    <header class="app-header">
+        <h1>PestSnap AI</h1>
+        <p>Pest &amp; Facility Inspection Assistant</p>
+    </header>
+
+
+    <!-- =====================================================
+         SECTION 1 - INSPECTION DETAILS
+    ====================================================== -->
+    <section
+        id="inspectionSection"
+        class="section workflow-section"
+        aria-labelledby="inspectionHeading"
+    >
+
+        <div class="section-header">
+            <div>
+                <h2 id="inspectionHeading">1. Inspection Details</h2>
+                <p class="section-description">
+                    Enter the basic details for this inspection.
+                </p>
+            </div>
+
+            <span
+                id="inspectionSectionStatus"
+                class="section-status"
+            >
+                Not saved
+            </span>
+        </div>
+
+
+        <div id="inspectionForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="clientName">Client Name</label>
+
+                    <input
+                        type="text"
+                        id="clientName"
+                        name="clientName"
+                        autocomplete="organization"
+                        placeholder="Enter client name"
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="siteLocation">Site / Location</label>
+
+                    <input
+                        type="text"
+                        id="siteLocation"
+                        name="siteLocation"
+                        autocomplete="street-address"
+                        placeholder="Enter site or location"
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="auditorName">Auditor Name</label>
+
+                    <input
+                        type="text"
+                        id="auditorName"
+                        name="auditorName"
+                        autocomplete="name"
+                        placeholder="Enter auditor name"
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="inspectionDate">Inspection Date</label>
+
+                    <input
+                        type="date"
+                        id="inspectionDate"
+                        name="inspectionDate"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="inspection-time">
+                <p>
+                    <strong>Inspection Start:</strong>
+                    <span id="inspectionStartTime">
+                        Not started
+                    </span>
+                </p>
+            </div>
+
+
+            <div class="button-group">
+
+                <button
+                    type="button"
+                    id="saveManualDetails"
+                    class="btn btn-primary"
+                >
+                    Save Manual Details
+                </button>
+
+            </div>
+
+
+            <div
+                id="manualDetailsStatus"
+                class="status-message"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+        </div>
+
+
+        <!-- Saved Details -->
+
+        <div
+            id="savedInspectionDetails"
+            class="saved-details"
+            hidden
+        >
+
+            <div class="saved-details-grid">
+
+                <p>
+                    <strong>Client:</strong>
+                    <span id="savedClientName"></span>
+                </p>
+
+                <p>
+                    <strong>Site:</strong>
+                    <span id="savedSiteLocation"></span>
+                </p>
+
+                <p>
+                    <strong>Auditor:</strong>
+                    <span id="savedAuditorName"></span>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <span id="savedInspectionDate"></span>
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="editManualDetails"
+                class="btn btn-secondary"
+            >
+                Edit Manual Details
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SECTION 2 - PHOTO
+    ====================================================== -->
+    <section
+        id="photoSection"
+        class="section workflow-section"
+        aria-labelledby="photoHeading"
+        hidden
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 id="photoHeading">
+                    2. Add Finding Photo
+                </h2>
+
+                <p class="section-description">
+                    Upload a photo or take a photo of the problem.
+                </p>
+
+            </div>
+
+            <span class="section-status">
+                Ready
+            </span>
+
+        </div>
+
+
+        <!-- ONE BUTTON ONLY -->
+
+        <div class="photo-actions">
+
+            <button
+                type="button"
+                id="photoButton"
+                class="btn btn-photo"
+            >
+                Upload Photo / Take Photo
+            </button>
+
+        </div>
+
+
+        <!-- Hidden file input -->
+
+        <input
+            type="file"
+            id="photoInput"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+            aria-label="Choose inspection photo"
+            hidden
+        >
+
+
+        <!-- Photo Preview -->
+
+        <div
+            id="photoPreviewContainer"
+            class="photo-preview-container"
+            hidden
+        >
+
+            <h3>Selected Photo</h3>
+
+            <img
+                id="photoPreview"
+                src=""
+                alt="Selected inspection photograph"
+            >
+
+
+            <div class="photo-management-actions">
+
+                <button
+                    type="button"
+                    id="replacePhotoButton"
+                    class="btn btn-secondary"
+                >
+                    Replace Photo
+                </button>
+
+
+                <button
+                    type="button"
+                    id="removePhotoButton"
+                    class="btn btn-danger"
+                >
+                    Remove Photo
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="photoSelectedMessage"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SECTION 3 - MARK PROBLEM
+    ====================================================== -->
+    <section
+        id="markSection"
+        class="section workflow-section"
+        aria-labelledby="markHeading"
+        hidden
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 id="markHeading">
+                    3. Mark Problem
+                </h2>
+
+                <p class="section-description">
+                    Draw freely on the photo to identify the problem area.
+                </p>
+
+            </div>
+
+
+            <span
+                id="markSectionStatus"
+                class="section-status"
+            >
+                Ready
+            </span>
+
+        </div>
+
+
+        <div
+            id="annotationContainer"
+            class="annotation-container"
+        >
+
+            <canvas
+                id="annotationCanvas"
+                aria-label="Photo marking area"
+            ></canvas>
+
+        </div>
+
+
+        <div class="annotation-controls">
+
+            <button
+                type="button"
+                id="undoAnnotationButton"
+                class="btn btn-secondary"
+                disabled
+            >
+                Undo
+            </button>
+
+
+            <button
+                type="button"
+                id="clearAnnotationButton"
+                class="btn btn-secondary"
+                disabled
+            >
+                Clear All
+            </button>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="donePhotoButton"
+            class="btn btn-primary"
+        >
+            Done
+        </button>
+
+
+        <div
+            id="annotationStatus"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SECTION 4 - FINDING DETAILS
+    ====================================================== -->
+    <section
+        id="aiSection"
+        class="section workflow-section"
+        aria-labelledby="aiHeading"
+        hidden
+    >
+
+        <div class="section-header">
+
+            <div>
+                <h2 id="aiHeading">
+                    4. Finding Details
+                </h2>
+
+                <p class="section-description">
+                    Enter the details for this finding.
+                </p>
+            </div>
+
+            <span
+                id="findingSectionStatus"
+                class="section-status"
+            >
+                Draft
+            </span>
+
+        </div>
+
+
+        <!-- Pest -->
+
+        <div class="form-group">
+
+            <label for="finding">
+                Finding
+            </label>
+
+            <input
+                type="text"
+                id="finding"
+                name="finding"
+                placeholder="Enter the finding"
+            >
+
+        </div>
+
+
+        <!-- Pest -->
+
+        <div class="form-group">
+
+            <label for="pestIssue">
+                Pest
+            </label>
+
+            <input
+                type="text"
+                id="pestIssue"
+                name="pestIssue"
+                placeholder="Enter pest or issue"
+            >
+
+        </div>
+
+
+        <!-- Area -->
+
+        <div class="form-group">
+
+            <label for="findingArea">
+                Area
+            </label>
+
+            <input
+                type="text"
+                id="findingArea"
+                name="findingArea"
+                placeholder="Enter affected area"
+            >
+
+        </div>
+
+
+        <!-- Observation -->
+
+        <div class="form-group">
+
+            <label for="observation">
+                Observation
+            </label>
+
+            <textarea
+                id="observation"
+                name="observation"
+                rows="4"
+                placeholder="Enter the inspection observation"
+            ></textarea>
+
+        </div>
+
+
+        <!-- Root Cause -->
+
+        <div class="form-group">
+
+            <label for="rootCause">
+                Root Cause
+            </label>
+
+            <textarea
+                id="rootCause"
+                name="rootCause"
+                rows="3"
+                placeholder="Enter the root cause"
+            ></textarea>
+
+        </div>
+
+
+        <!-- Action Plan -->
+
+        <div class="form-group">
+
+            <label for="actionPlan">
+                Action Plan
+            </label>
+
+            <select
+                id="actionPlan"
+                name="actionPlan"
+            >
+
+                <option value="">
+                    Select action plan
+                </option>
+
+                <option value="Seal the identified opening or gap using suitable material.">
+                    Seal the identified opening or gap using suitable material.
+                </option>
+
+                <option value="Remove stagnant water and implement measures to prevent recurrence.">
+                    Remove stagnant water and implement measures to prevent recurrence.
+                </option>
+
+                <option value="Clean the affected area and maintain proper housekeeping.">
+                    Clean the affected area and maintain proper housekeeping.
+                </option>
+
+                <option value="Remove the identified food or waste source and maintain proper sanitation.">
+                    Remove the identified food or waste source and maintain proper sanitation.
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Timeline -->
+
+        <div class="form-group">
+
+            <label for="timeline">
+                Timeline
+            </label>
+
+            <select
+                id="timeline"
+                name="timeline"
+            >
+
+                <option value="">
+                    Select timeline
+                </option>
+
+                <option value="Immediate">
+                    Immediate
+                </option>
+
+                <option value="24 Hours">
+                    24 Hours
+                </option>
+
+                <option value="3 Days">
+                    3 Days
+                </option>
+
+                <option value="7 Days">
+                    7 Days
+                </option>
+
+                <option value="15 Days">
+                    15 Days
+                </option>
+
+                <option value="30 Days">
+                    30 Days
+                </option>
+
+                <option value="Custom">
+                    Custom
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Responsibility -->
+
+        <div class="form-group">
+
+            <label for="responsibility">
+                Responsibility
+            </label>
+
+            <select
+                id="responsibility"
+                name="responsibility"
+            >
+
+                <option value="">
+                    Select responsibility
+                </option>
+
+                <option value="Maintenance">
+                    Maintenance
+                </option>
+
+                <option value="Housekeeping">
+                    Housekeeping
+                </option>
+
+                <option value="Operations">
+                    Operations
+                </option>
+
+                <option value="Kitchen">
+                    Kitchen
+                </option>
+
+                <option value="Engineering">
+                    Engineering
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="form-group">
+
+            <label for="priority">
+                Priority
+            </label>
+
+            <select
+                id="priority"
+                name="priority"
+            >
+
+                <option value="">
+                    Select priority
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="form-group">
+
+            <label for="findingStatus">
+                Status
+            </label>
+
+            <select
+                id="findingStatus"
+                name="findingStatus"
+            >
+
+                <option value="Open">
+                    Open
+                </option>
+
+                <option value="WIP">
+                    WIP
+                </option>
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+                <option value="On Hold">
+                    On Hold
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Remarks -->
+
+        <div class="form-group">
+
+            <label for="photoNote">
+                Remarks
+            </label>
+
+            <textarea
+                id="photoNote"
+                name="photoNote"
+                rows="3"
+                placeholder="Enter remarks"
+            ></textarea>
+
+        </div>
+
+
+        <!-- Save -->
+
+        <div class="button-group">
+
+            <button
+                type="button"
+                id="saveFindingButton"
+                class="btn btn-success"
+            >
+                Save Finding
+            </button>
+
+        </div>
+
+
+        <div
+            id="findingFormStatus"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SECTION 5 - REPORT
+    ====================================================== -->
+    <section
+        id="reportSection"
+        class="section workflow-section"
+        aria-labelledby="reportHeading"
+        hidden
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 id="reportHeading">
+                    5. Inspection Report
+                </h2>
+
+                <p class="section-description">
+                    Your saved findings and reports.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="inspection-summary">
+
+            <p>
+                <strong>Findings:</strong>
+                <span id="findingCount">0</span>
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <span id="inspectionStatus">
+                    Not started
+                </span>
+            </p>
+
+        </div>
+
+
+        <!-- Saved Findings -->
+
+        <div
+            id="savedFindingsContainer"
+            class="saved-findings"
+            aria-live="polite"
+        >
+
+            <p>
+                No findings saved yet.
+            </p>
+
+        </div>
+
+
+        <!-- Report Buttons -->
+
+        <div class="report-actions">
+
+            <button
+                type="button"
+                id="downloadExcelButton"
+                class="btn btn-success"
+            >
+                Download Excel
+            </button>
+
+
+            <button
+                type="button"
+                id="downloadPdfButton"
+                class="btn btn-success"
+                disabled
+            >
+                Download PDF
+            </button>
+
+        </div>
+
+
+        <!-- Reset -->
+
+        <div class="reset-section">
+
+            <button
+                type="button"
+                id="resetInspectionButton"
+                class="btn btn-danger"
+            >
+                Reset Inspection
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         APPLICATION MESSAGE
+    ====================================================== -->
+
+    <div
+        id="appMessage"
+        class="app-message"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+</main>
+
+
+<!-- =====================================================
+     LIBRARIES
+====================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js">
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js">
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js">
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
