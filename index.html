@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -239,6 +239,49 @@
             aria-label="Choose inspection photo"
             hidden
         >
+
+        <input
+            type="file"
+            id="cameraInput"
+            accept="image/*"
+            capture="environment"
+            aria-label="Take inspection photo"
+            hidden
+        >
+
+        <dialog
+            id="photoSourceDialog"
+            aria-labelledby="photoSourceHeading"
+        >
+            <h3 id="photoSourceHeading">Choose Photo</h3>
+
+            <div class="photo-source-actions">
+                <button
+                    type="button"
+                    id="takePhotoButton"
+                    class="btn btn-primary"
+                    autofocus
+                >
+                    Take Photo
+                </button>
+
+                <button
+                    type="button"
+                    id="chooseGalleryButton"
+                    class="btn btn-secondary"
+                >
+                    Choose from Gallery
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelPhotoSourceButton"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+            </div>
+        </dialog>
 
 
         <!-- Photo Preview -->
@@ -484,24 +527,6 @@
                 name="observation"
                 rows="4"
                 placeholder="Enter the inspection observation"
-            ></textarea>
-
-        </div>
-
-
-        <!-- Root Cause -->
-
-        <div class="form-group">
-
-            <label for="rootCause">
-                Root Cause
-            </label>
-
-            <textarea
-                id="rootCause"
-                name="rootCause"
-                rows="3"
-                placeholder="Enter the root cause"
             ></textarea>
 
         </div>
@@ -845,6 +870,7 @@
                 type="button"
                 id="resetInspectionButton"
                 class="btn btn-danger"
+                hidden
             >
                 Reset Inspection
             </button>
@@ -853,6 +879,21 @@
 
     </section>
 
+
+    <!-- Reset -->
+
+    <div class="reset-section">
+
+        <button
+            type="button"
+            id="resetInspectionButton"
+            class="btn btn-danger"
+            hidden
+        >
+            Reset Inspection
+        </button>
+
+    </div>
 
 
     <!-- =====================================================
@@ -874,7 +915,7 @@
 ====================================================== -->
 
 <script
-    src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js">
+    src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js">
 </script>
 
 <script

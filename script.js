@@ -73,6 +73,21 @@ const photoButton =
 const photoInput =
     document.getElementById("photoInput");
 
+const cameraInput =
+    document.getElementById("cameraInput");
+
+const photoSourceDialog =
+    document.getElementById("photoSourceDialog");
+
+const takePhotoButton =
+    document.getElementById("takePhotoButton");
+
+const chooseGalleryButton =
+    document.getElementById("chooseGalleryButton");
+
+const cancelPhotoSourceButton =
+    document.getElementById("cancelPhotoSourceButton");
+
 const photoPreviewContainer =
     document.getElementById("photoPreviewContainer");
 
@@ -136,9 +151,6 @@ const findingArea =
 const observation =
     document.getElementById("observation");
 
-const rootCauseInput =
-    document.getElementById("rootCause");
-
 const actionPlan =
     document.getElementById("actionPlan");
 
@@ -178,11 +190,7 @@ const downloadExcelButton =
 const downloadPdfButton =
     document.getElementById("downloadPdfButton");
 
-let editingFindingNumber =
-    null;
-
-let cancelEditButton =
-    null;
+let editingFindingNumber = null;
 
 
 // =========================================================
@@ -286,7 +294,6 @@ function clearFindingForm() {
     pestIssue.value = "";
     findingArea.value = "";
     observation.value = "";
-    rootCauseInput.value = "";
     actionPlan.value = "";
     responsibility.value = "";
     timeline.value = "";
@@ -344,9 +351,6 @@ function enterFindingEditMode(finding) {
 
     observation.value =
         finding.observation || "";
-
-    rootCauseInput.value =
-        finding.rootCause || "";
 
     actionPlan.value =
         finding.actionPlan || "";
@@ -523,6 +527,9 @@ function loadInspectionFromStorage() {
         photoSection.hidden =
             !inspection.saved;
 
+        resetInspectionButton.hidden =
+            !inspection.saved;
+
         markSection.hidden =
             true;
 
@@ -681,6 +688,8 @@ saveManualDetailsButton.addEventListener(
 
         photoSection.hidden = false;
 
+        resetInspectionButton.hidden = false;
+
 
         showAppMessage(
             "Inspection saved. Add your first photo."
@@ -724,11 +733,22 @@ editManualDetailsButton.addEventListener(
 // Photo Button
 // =========================================================
 
+function openPhotoSourceDialog() {
+
+    if (typeof photoSourceDialog.showModal === "function") {
+        photoSourceDialog.showModal();
+        return;
+    }
+
+    photoInput.click();
+}
+
+
 photoButton.addEventListener(
     "click",
     function () {
 
-        photoInput.click();
+        openPhotoSourceDialog();
     }
 );
 
@@ -741,7 +761,36 @@ replacePhotoButton.addEventListener(
     "click",
     function () {
 
+        openPhotoSourceDialog();
+    }
+);
+
+
+takePhotoButton.addEventListener(
+    "click",
+    function () {
+
+        photoSourceDialog.close();
+        cameraInput.click();
+    }
+);
+
+
+chooseGalleryButton.addEventListener(
+    "click",
+    function () {
+
+        photoSourceDialog.close();
         photoInput.click();
+    }
+);
+
+
+cancelPhotoSourceButton.addEventListener(
+    "click",
+    function () {
+
+        photoSourceDialog.close();
     }
 );
 
@@ -938,6 +987,9 @@ resetInspectionButton.addEventListener(
             false;
 
         savedInspectionDetails.hidden =
+            true;
+
+        resetInspectionButton.hidden =
             true;
 
 
@@ -1327,29 +1379,24 @@ function prepareAnnotationCanvas(image) {
 // Photo Upload
 // =========================================================
 
-photoInput.addEventListener(
-    "change",
-    function () {
-
-        const file =
-            photoInput.files[0];
+function processPhotoFile(file, sourceInput) {
 
 
-        if (!file) {
-            return;
-        }
+    if (!file) {
+        return;
+    }
 
 
-        if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith("image/")) {
 
-            showAppMessage(
-                "Please select a PNG, JPG, JPEG, or WEBP image."
-            );
+        showAppMessage(
+            "Please select a PNG, JPG, JPEG, or WEBP image."
+        );
 
-            photoInput.value = "";
+        sourceInput.value = "";
 
-            return;
-        }
+        return;
+    }
 
 
         const imageURL =
@@ -1420,7 +1467,7 @@ photoInput.addEventListener(
                     "";
 
 
-                photoInput.value =
+                sourceInput.value =
                     "";
 
 
@@ -1438,8 +1485,31 @@ photoInput.addEventListener(
             };
 
 
-        photoPreview.src =
-            imageURL;
+    photoPreview.src =
+        imageURL;
+}
+
+
+photoInput.addEventListener(
+    "change",
+    function () {
+
+        processPhotoFile(
+            photoInput.files[0],
+            photoInput
+        );
+    }
+);
+
+
+cameraInput.addEventListener(
+    "change",
+    function () {
+
+        processPhotoFile(
+            cameraInput.files[0],
+            cameraInput
+        );
     }
 );
 
@@ -1545,18 +1615,6 @@ saveFindingButton.addEventListener(
         }
 
 
-        if (!rootCauseInput.value.trim()) {
-
-            showAppMessage(
-                "Please enter the root cause."
-            );
-
-            rootCauseInput.focus();
-
-            return;
-        }
-
-
         if (!actionPlan.value) {
 
             showAppMessage(
@@ -1647,9 +1705,6 @@ saveFindingButton.addEventListener(
             finding.observation =
                 observation.value.trim();
 
-            finding.rootCause =
-                rootCauseInput.value.trim();
-
             finding.actionPlan =
                 actionPlan.value;
 
@@ -1720,9 +1775,6 @@ saveFindingButton.addEventListener(
 
             observation:
                 observation.value.trim(),
-
-            rootCause:
-                rootCauseInput.value.trim(),
 
             actionPlan:
                 actionPlan.value,
@@ -2006,11 +2058,6 @@ function addFindingToList(finding) {
         </p>
 
         <p>
-            <strong>Root Cause:</strong>
-            ${escapeHtml(finding.rootCause || "")}
-        </p>
-
-        <p>
             <strong>Action Plan:</strong>
             ${escapeHtml(finding.actionPlan || "")}
         </p>
@@ -2265,9 +2312,6 @@ function prepareNextFinding() {
         "";
 
     observation.value =
-        "";
-
-    rootCauseInput.value =
         "";
 
     actionPlan.value =
@@ -2637,10 +2681,6 @@ async function generatePdfReport() {
                     finding.observation || ""
                 ],
                 [
-                    "Root Cause",
-                    finding.rootCause || ""
-                ],
-                [
                     "Action Plan",
                     finding.actionPlan || ""
                 ],
@@ -2824,14 +2864,10 @@ async function generateExcelReport() {
     try {
         showAppMessage("Preparing Excel report...");
 
-        const response = await fetch("template.xlsx");
+        const ExcelJSLibrary =
+            await ensureExcelJsLoaded();
 
-        console.log(
-            "template.xlsx response:",
-            response.status,
-            response.statusText,
-            response.url
-        );
+        const response = await fetch("template.xlsx");
 
         if (!response.ok) {
             throw new Error("template.xlsx could not be loaded.");
@@ -2839,31 +2875,37 @@ async function generateExcelReport() {
 
         const arrayBuffer = await response.arrayBuffer();
 
-        // Make sure ExcelJS is available even when index.html
-        // does not include the ExcelJS CDN script.
-        const ExcelJSLibrary =
-            await ensureExcelJsLoaded();
-
         const workbook =
             new ExcelJSLibrary.Workbook();
 
         await workbook.xlsx.load(arrayBuffer);
 
-        const worksheet = workbook.getWorksheet("Report");
+        console.log(
+            "Excel worksheet names:",
+            workbook.worksheets.map(ws => ws.name)
+        );
+
+        const worksheet =
+            workbook.getWorksheet("Report");
 
         if (!worksheet) {
-            throw new Error("Report sheet was not found.");
+            throw new Error(
+                "No worksheet found. Available sheets: " +
+                workbook.worksheets.map(ws => ws.name).join(", ")
+            );
         }
 
-        // New Excel template mapping
-        // Client Name -> E5
-        // Location -> K5
-        worksheet.getCell("E5").value =
-            String(inspection.clientName || "").trim();
-        worksheet.getCell("K5").value =
-            String(inspection.siteLocation || "").trim();
+        const excelText = function (value) {
+            return String(value ?? "")
+                .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+                .trim();
+        };
 
-        // Header row is 7; first finding row is 8.
+        worksheet.getCell("E5").value =
+            excelText(inspection.clientName);
+        worksheet.getCell("K5").value =
+            excelText(inspection.siteLocation);
+
         const startRow = 8;
 
         for (let index = 0; index < inspection.findings.length; index++) {
@@ -2871,45 +2913,69 @@ async function generateExcelReport() {
             const rowNumber = startRow + index;
             const row = worksheet.getRow(rowNumber);
 
-            row.getCell(2).value = finding.findingNumber;
-            row.getCell(3).value = inspection.inspectionDate;
-            row.getCell(5).value = finding.finding || "";
-            row.getCell(6).value = finding.pestIssue || "";
-            row.getCell(7).value = finding.area || "";
-            row.getCell(8).value = finding.observation || "";
-            row.getCell(9).value = finding.rootCause || "";
-            row.getCell(10).value = finding.actionPlan || "";
-            row.getCell(11).value = finding.timeline || "";
-            row.getCell(12).value = finding.responsibility || "";
-            row.getCell(13).value = finding.priority || "";
-            row.getCell(14).value = finding.status || "";
-            row.getCell(15).value =
+            row.getCell(2).value =
+                finding.findingNumber ?? index + 1;
+            row.getCell(3).value =
+                excelText(inspection.inspectionDate);
+            row.getCell(5).value = excelText(finding.finding);
+            row.getCell(6).value = excelText(finding.pestIssue);
+            row.getCell(7).value = excelText(finding.area);
+            row.getCell(8).value = excelText(finding.observation);
+            row.getCell(9).value = excelText(finding.actionPlan);
+            row.getCell(10).value = excelText(finding.timeline);
+            row.getCell(11).value = excelText(finding.responsibility);
+            row.getCell(12).value = excelText(finding.priority);
+            row.getCell(13).value = excelText(finding.status);
+            row.getCell(14).value =
                 calculateAgeingDays(inspection.inspectionDate);
-
-            console.log(
-                "Excel Remarks for Finding " + finding.findingNumber + ":",
-                finding.photoNote
-            );
-
-            row.getCell(16).value = finding.photoNote || "";
-            row.alignment = { vertical: "top", wrapText: true };
-            row.height = 153.75;
+            row.getCell(15).value = excelText(finding.photoNote);
 
             if (finding.markedPhoto) {
+                console.log(
+                    "markedPhoto:",
+                    finding.markedPhoto?.substring(0, 50)
+                );
+
+                const imageMatch = finding.markedPhoto.match(
+                    /^data:image\/(png|jpeg|jpg);base64,/i
+                );
+
+                if (!imageMatch) {
+                    throw new Error(
+                        "Unsupported marked photo format. Expected a PNG or JPEG data URL."
+                    );
+                }
+
+                const extension =
+                    imageMatch[1].toLowerCase() === "png"
+                        ? "png"
+                        : "jpeg";
                 const imageId = workbook.addImage({
                     base64: finding.markedPhoto,
-                    extension: "jpeg"
+                    extension
                 });
 
                 // ExcelJS image columns are zero-based: col 3 = Excel column D.
                 worksheet.addImage(imageId, {
                     tl: { col: 3, row: rowNumber - 1 },
-                    ext: { width: 180, height: 120 }
+                    // Use a two-cell anchor like the template logo. Offsets are EMU:
+                    // 220 px * 9525 and 150 px * 9525.
+                    br: {
+                        nativeCol: 3,
+                        nativeColOff: 2095500,
+                        nativeRow: rowNumber - 1,
+                        nativeRowOff: 1428750
+                    }
+                });
+
+                console.log("Image added:", {
+                    finding: finding.findingNumber,
+                    row: rowNumber,
+                    column: "D",
+                    markedPhoto: !!finding.markedPhoto
                 });
             }
         }
-
-        worksheet.views = [{ state: "frozen", ySplit: 11 }];
 
         const output = await workbook.xlsx.writeBuffer();
         const blob = new Blob([output], {
