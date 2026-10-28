@@ -3,6 +3,10 @@
    Main Application Styles
    ========================================================= */
 
+[hidden] {
+    display: none !important;
+}
+
 /* ---------- Base ---------- */
 
 * {

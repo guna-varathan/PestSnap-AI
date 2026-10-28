@@ -191,6 +191,181 @@ const downloadPdfButton =
     document.getElementById("downloadPdfButton");
 
 let editingFindingNumber = null;
+let cancelEditButton = null;
+
+const customPestContainer =
+    document.getElementById("customPestContainer");
+
+const customPest =
+    document.getElementById("customPest");
+
+const customAreaContainer =
+    document.getElementById("customAreaContainer");
+
+const customArea =
+    document.getElementById("customArea");
+
+const customActionPlanContainer =
+    document.getElementById("customActionPlanContainer");
+
+const customActionPlan =
+    document.getElementById("customActionPlan");
+
+const customResponsibilityContainer =
+    document.getElementById("customResponsibilityContainer");
+
+const customResponsibility =
+    document.getElementById("customResponsibility");
+
+
+// =========================================================
+// Combo Box Helpers & Listeners
+// =========================================================
+
+function setComboBoxValue(selectElement, containerElement, customInputElement, savedValue) {
+    if (!selectElement) {
+        return;
+    }
+
+    const valueStr = String(savedValue || "").trim();
+
+    if (!valueStr) {
+        selectElement.value = "";
+        if (containerElement) {
+            containerElement.hidden = true;
+        }
+        if (customInputElement) {
+            customInputElement.value = "";
+        }
+        return;
+    }
+
+    const matchingOption = Array.from(selectElement.options).find(function (opt) {
+        return opt.value && opt.value !== "Other" && opt.value.toLowerCase() === valueStr.toLowerCase();
+    });
+
+    if (matchingOption) {
+        selectElement.value = matchingOption.value;
+        if (containerElement) {
+            containerElement.hidden = true;
+        }
+        if (customInputElement) {
+            customInputElement.value = "";
+        }
+    } else {
+        selectElement.value = "Other";
+        if (containerElement) {
+            containerElement.hidden = false;
+        }
+        if (customInputElement) {
+            customInputElement.value = valueStr === "Other" ? "" : valueStr;
+        }
+    }
+}
+
+function setStatusValue(statusSelect, savedStatus) {
+    if (!statusSelect) {
+        return;
+    }
+
+    const statusStr = String(savedStatus || "Open").trim();
+
+    const matchingOption = Array.from(statusSelect.options).find(function (opt) {
+        return opt.value && opt.value.toLowerCase() === statusStr.toLowerCase();
+    });
+
+    if (matchingOption) {
+        statusSelect.value = matchingOption.value;
+    } else if (statusStr) {
+        const option = document.createElement("option");
+        option.value = statusStr;
+        option.textContent = statusStr;
+        statusSelect.appendChild(option);
+        statusSelect.value = statusStr;
+    } else {
+        statusSelect.value = "Open";
+    }
+}
+
+if (pestIssue) {
+    pestIssue.addEventListener("change", function () {
+        if (pestIssue.value === "Other") {
+            if (customPestContainer) {
+                customPestContainer.hidden = false;
+            }
+            if (customPest) {
+                customPest.focus();
+            }
+        } else {
+            if (customPestContainer) {
+                customPestContainer.hidden = true;
+            }
+            if (customPest) {
+                customPest.value = "";
+            }
+        }
+    });
+}
+
+if (findingArea) {
+    findingArea.addEventListener("change", function () {
+        if (findingArea.value === "Other") {
+            if (customAreaContainer) {
+                customAreaContainer.hidden = false;
+            }
+            if (customArea) {
+                customArea.focus();
+            }
+        } else {
+            if (customAreaContainer) {
+                customAreaContainer.hidden = true;
+            }
+            if (customArea) {
+                customArea.value = "";
+            }
+        }
+    });
+}
+
+if (actionPlan) {
+    actionPlan.addEventListener("change", function () {
+        if (actionPlan.value === "Other") {
+            if (customActionPlanContainer) {
+                customActionPlanContainer.hidden = false;
+            }
+            if (customActionPlan) {
+                customActionPlan.focus();
+            }
+        } else {
+            if (customActionPlanContainer) {
+                customActionPlanContainer.hidden = true;
+            }
+            if (customActionPlan) {
+                customActionPlan.value = "";
+            }
+        }
+    });
+}
+
+if (responsibility) {
+    responsibility.addEventListener("change", function () {
+        if (responsibility.value === "Other") {
+            if (customResponsibilityContainer) {
+                customResponsibilityContainer.hidden = false;
+            }
+            if (customResponsibility) {
+                customResponsibility.focus();
+            }
+        } else {
+            if (customResponsibilityContainer) {
+                customResponsibilityContainer.hidden = true;
+            }
+            if (customResponsibility) {
+                customResponsibility.value = "";
+            }
+        }
+    });
+}
 
 
 // =========================================================
@@ -292,10 +467,39 @@ function clearFindingForm() {
 
     findingInput.value = "";
     pestIssue.value = "";
+    if (customPestContainer) {
+        customPestContainer.hidden = true;
+    }
+    if (customPest) {
+        customPest.value = "";
+    }
+
     findingArea.value = "";
+    if (customAreaContainer) {
+        customAreaContainer.hidden = true;
+    }
+    if (customArea) {
+        customArea.value = "";
+    }
+
     observation.value = "";
+
     actionPlan.value = "";
+    if (customActionPlanContainer) {
+        customActionPlanContainer.hidden = true;
+    }
+    if (customActionPlan) {
+        customActionPlan.value = "";
+    }
+
     responsibility.value = "";
+    if (customResponsibilityContainer) {
+        customResponsibilityContainer.hidden = true;
+    }
+    if (customResponsibility) {
+        customResponsibility.value = "";
+    }
+
     timeline.value = "";
     priorityInput.value = "";
     findingStatus.value = "Open";
@@ -343,29 +547,47 @@ function enterFindingEditMode(finding) {
     findingInput.value =
         finding.finding || "";
 
-    pestIssue.value =
-        finding.pestIssue || "";
+    setComboBoxValue(
+        pestIssue,
+        customPestContainer,
+        customPest,
+        finding.pestIssue
+    );
 
-    findingArea.value =
-        finding.area || "";
+    setComboBoxValue(
+        findingArea,
+        customAreaContainer,
+        customArea,
+        finding.area
+    );
 
     observation.value =
         finding.observation || "";
 
-    actionPlan.value =
-        finding.actionPlan || "";
+    setComboBoxValue(
+        actionPlan,
+        customActionPlanContainer,
+        customActionPlan,
+        finding.actionPlan
+    );
 
     timeline.value =
         finding.timeline || "";
 
-    responsibility.value =
-        finding.responsibility || "";
+    setComboBoxValue(
+        responsibility,
+        customResponsibilityContainer,
+        customResponsibility,
+        finding.responsibility
+    );
 
     priorityInput.value =
         finding.priority || "";
 
-    findingStatus.value =
-        finding.status || "Open";
+    setStatusValue(
+        findingStatus,
+        finding.status
+    );
 
     const photoNote =
         document.getElementById("photoNote");
@@ -1579,10 +1801,10 @@ saveFindingButton.addEventListener(
         }
 
 
-        if (!pestIssue.value.trim()) {
+        if (!pestIssue.value) {
 
             showAppMessage(
-                "Please enter the pest."
+                "Please select the pest."
             );
 
             pestIssue.focus();
@@ -1591,13 +1813,41 @@ saveFindingButton.addEventListener(
         }
 
 
-        if (!findingArea.value.trim()) {
+        if (pestIssue.value === "Other" && (!customPest || !customPest.value.trim())) {
 
             showAppMessage(
-                "Please enter the area."
+                "Please enter the custom pest name."
+            );
+
+            if (customPest) {
+                customPest.focus();
+            }
+
+            return;
+        }
+
+
+        if (!findingArea.value) {
+
+            showAppMessage(
+                "Please select the area."
             );
 
             findingArea.focus();
+
+            return;
+        }
+
+
+        if (findingArea.value === "Other" && (!customArea || !customArea.value.trim())) {
+
+            showAppMessage(
+                "Please enter the custom area name."
+            );
+
+            if (customArea) {
+                customArea.focus();
+            }
 
             return;
         }
@@ -1627,6 +1877,20 @@ saveFindingButton.addEventListener(
         }
 
 
+        if (actionPlan.value === "Other" && (!customActionPlan || !customActionPlan.value.trim())) {
+
+            showAppMessage(
+                "Please enter the custom action plan."
+            );
+
+            if (customActionPlan) {
+                customActionPlan.focus();
+            }
+
+            return;
+        }
+
+
         if (!timeline.value) {
 
             showAppMessage(
@@ -1646,6 +1910,20 @@ saveFindingButton.addEventListener(
             );
 
             responsibility.focus();
+
+            return;
+        }
+
+
+        if (responsibility.value === "Other" && (!customResponsibility || !customResponsibility.value.trim())) {
+
+            showAppMessage(
+                "Please enter the custom responsibility."
+            );
+
+            if (customResponsibility) {
+                customResponsibility.focus();
+            }
 
             return;
         }
@@ -1675,6 +1953,27 @@ saveFindingButton.addEventListener(
         }
 
 
+        const resolvedPest =
+            pestIssue.value === "Other"
+                ? (customPest ? customPest.value.trim() : "")
+                : pestIssue.value.trim();
+
+        const resolvedArea =
+            findingArea.value === "Other"
+                ? (customArea ? customArea.value.trim() : "")
+                : findingArea.value.trim();
+
+        const resolvedActionPlan =
+            actionPlan.value === "Other"
+                ? (customActionPlan ? customActionPlan.value.trim() : "")
+                : actionPlan.value.trim();
+
+        const resolvedResponsibility =
+            responsibility.value === "Other"
+                ? (customResponsibility ? customResponsibility.value.trim() : "")
+                : responsibility.value.trim();
+
+
         if (editingFindingNumber !== null) {
 
             const finding =
@@ -1697,22 +1996,22 @@ saveFindingButton.addEventListener(
                 findingInput.value.trim();
 
             finding.pestIssue =
-                pestIssue.value.trim();
+                resolvedPest;
 
             finding.area =
-                findingArea.value.trim();
+                resolvedArea;
 
             finding.observation =
                 observation.value.trim();
 
             finding.actionPlan =
-                actionPlan.value;
+                resolvedActionPlan;
 
             finding.timeline =
                 timeline.value;
 
             finding.responsibility =
-                responsibility.value;
+                resolvedResponsibility;
 
             finding.priority =
                 priorityInput.value;
@@ -1768,22 +2067,22 @@ saveFindingButton.addEventListener(
                 findingInput.value.trim(),
 
             pestIssue:
-                pestIssue.value.trim(),
+                resolvedPest,
 
             area:
-                findingArea.value.trim(),
+                resolvedArea,
 
             observation:
                 observation.value.trim(),
 
             actionPlan:
-                actionPlan.value,
+                resolvedActionPlan,
 
             timeline:
                 timeline.value,
 
             responsibility:
-                responsibility.value,
+                resolvedResponsibility,
 
             priority:
                 priorityInput.value,
@@ -2305,11 +2604,27 @@ function prepareNextFinding() {
     pestIssue.value =
         "";
 
+    if (customPestContainer) {
+        customPestContainer.hidden = true;
+    }
+
+    if (customPest) {
+        customPest.value = "";
+    }
+
     findingInput.value =
         "";
 
     findingArea.value =
         "";
+
+    if (customAreaContainer) {
+        customAreaContainer.hidden = true;
+    }
+
+    if (customArea) {
+        customArea.value = "";
+    }
 
     observation.value =
         "";
@@ -2317,8 +2632,24 @@ function prepareNextFinding() {
     actionPlan.value =
         "";
 
+    if (customActionPlanContainer) {
+        customActionPlanContainer.hidden = true;
+    }
+
+    if (customActionPlan) {
+        customActionPlan.value = "";
+    }
+
     responsibility.value =
         "";
+
+    if (customResponsibilityContainer) {
+        customResponsibilityContainer.hidden = true;
+    }
+
+    if (customResponsibility) {
+        customResponsibility.value = "";
+    }
 
     timeline.value =
         "";
@@ -2913,22 +3244,43 @@ async function generateExcelReport() {
             const rowNumber = startRow + index;
             const row = worksheet.getRow(rowNumber);
 
+            // Column B (2): # (Finding number)
             row.getCell(2).value =
                 finding.findingNumber ?? index + 1;
+
+            // Column C (3): Audit Date
             row.getCell(3).value =
-                excelText(inspection.inspectionDate);
-            row.getCell(5).value = excelText(finding.finding);
-            row.getCell(6).value = excelText(finding.pestIssue);
-            row.getCell(7).value = excelText(finding.area);
-            row.getCell(8).value = excelText(finding.observation);
-            row.getCell(9).value = excelText(finding.actionPlan);
-            row.getCell(10).value = excelText(finding.timeline);
-            row.getCell(11).value = excelText(finding.responsibility);
-            row.getCell(12).value = excelText(finding.priority);
-            row.getCell(13).value = excelText(finding.status);
-            row.getCell(14).value =
-                calculateAgeingDays(inspection.inspectionDate);
-            row.getCell(15).value = excelText(finding.photoNote);
+                excelText(finding.auditDate || inspection.inspectionDate);
+
+            // Column D (4): Picture (Marked photo inserted via worksheet.addImage below)
+
+            // Column E (5): Pest
+            row.getCell(5).value = excelText(finding.pestIssue);
+
+            // Column F (6): Area
+            row.getCell(6).value = excelText(finding.area);
+
+            // Column G (7): Observations
+            row.getCell(7).value = excelText(finding.observation);
+
+            // Column H (8): Action plan
+            row.getCell(8).value = excelText(finding.actionPlan);
+
+            // Column I (9): Time line / Status
+            row.getCell(9).value = excelText(finding.timeline);
+
+            // Column J (10): Responsibility
+            row.getCell(10).value = excelText(finding.responsibility);
+
+            // Column K (11): Status
+            row.getCell(11).value = excelText(finding.status);
+
+            // Column L (12): Ageing Days
+            row.getCell(12).value =
+                calculateAgeingDays(finding.auditDate || inspection.inspectionDate);
+
+            // Column M (13): Remarks
+            row.getCell(13).value = excelText(finding.photoNote);
 
             if (finding.markedPhoto) {
                 console.log(

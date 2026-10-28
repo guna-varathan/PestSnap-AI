@@ -486,11 +486,66 @@
                 Pest
             </label>
 
-            <input
-                type="text"
+            <select
                 id="pestIssue"
                 name="pestIssue"
-                placeholder="Enter pest or issue"
+            >
+                <option value="">
+                    Select pest
+                </option>
+                <option value="Cockroach">
+                    Cockroach
+                </option>
+                <option value="Mosquito">
+                    Mosquito
+                </option>
+                <option value="Housefly">
+                    Housefly
+                </option>
+                <option value="Rodent (Rat/Mouse)">
+                    Rodent (Rat/Mouse)
+                </option>
+                <option value="Ant">
+                    Ant
+                </option>
+                <option value="Termite">
+                    Termite
+                </option>
+                <option value="Bed Bug">
+                    Bed Bug
+                </option>
+                <option value="Lizard">
+                    Lizard
+                </option>
+                <option value="Spider">
+                    Spider
+                </option>
+                <option value="Stored Product Pest">
+                    Stored Product Pest
+                </option>
+                <option value="Other">
+                    Other
+                </option>
+            </select>
+
+        </div>
+
+
+        <div
+            id="customPestContainer"
+            class="form-group"
+            hidden
+        >
+
+            <label for="customPest">
+                Specify Pest
+            </label>
+
+            <input
+                type="text"
+                id="customPest"
+                name="customPest"
+                placeholder="Enter custom pest name"
             >
 
         </div>
@@ -504,11 +559,69 @@
                 Area
             </label>
 
-            <input
-                type="text"
+            <select
                 id="findingArea"
                 name="findingArea"
-                placeholder="Enter affected area"
+            >
+                <option value="">
+                    Select area
+                </option>
+                <option value="Kitchen">
+                    Kitchen
+                </option>
+                <option value="Dining Area">
+                    Dining Area
+                </option>
+                <option value="Food Storage">
+                    Food Storage
+                </option>
+                <option value="Production Area">
+                    Production Area
+                </option>
+                <option value="Warehouse">
+                    Warehouse
+                </option>
+                <option value="Office">
+                    Office
+                </option>
+                <option value="Restroom">
+                    Restroom
+                </option>
+                <option value="Drainage">
+                    Drainage
+                </option>
+                <option value="Waste Storage">
+                    Waste Storage
+                </option>
+                <option value="Pump Room">
+                    Pump Room
+                </option>
+                <option value="External Perimeter">
+                    External Perimeter
+                </option>
+                <option value="Other">
+                    Other
+                </option>
+            </select>
+
+        </div>
+
+
+        <div
+            id="customAreaContainer"
+            class="form-group"
+            hidden
+        >
+
+            <label for="customArea">
+                Specify Area
+            </label>
+
+            <input
+                type="text"
+                id="customArea"
+                name="customArea"
+                placeholder="Enter custom area name"
             >
 
         </div>
@@ -549,6 +662,46 @@
                     Select action plan
                 </option>
 
+                <option value="Seal entry points and gaps">
+                    Seal entry points and gaps
+                </option>
+
+                <option value="Remove stagnant water">
+                    Remove stagnant water
+                </option>
+
+                <option value="Improve housekeeping">
+                    Improve housekeeping
+                </option>
+
+                <option value="Remove food and waste sources">
+                    Remove food and waste sources
+                </option>
+
+                <option value="Clean and sanitize the affected area">
+                    Clean and sanitize the affected area
+                </option>
+
+                <option value="Repair damaged door sweeps or screens">
+                    Repair damaged door sweeps or screens
+                </option>
+
+                <option value="Install or repair rodent-proofing measures">
+                    Install or repair rodent-proofing measures
+                </option>
+
+                <option value="Inspect and clean drains">
+                    Inspect and clean drains
+                </option>
+
+                <option value="Apply approved pest-control treatment where appropriate">
+                    Apply approved pest-control treatment where appropriate
+                </option>
+
+                <option value="Monitor and schedule a follow-up inspection">
+                    Monitor and schedule a follow-up inspection
+                </option>
+
                 <option value="Seal the identified opening or gap using suitable material.">
                     Seal the identified opening or gap using suitable material.
                 </option>
@@ -565,7 +718,31 @@
                     Remove the identified food or waste source and maintain proper sanitation.
                 </option>
 
+                <option value="Other">
+                    Other
+                </option>
+
             </select>
+
+        </div>
+
+
+        <div
+            id="customActionPlanContainer"
+            class="form-group"
+            hidden
+        >
+
+            <label for="customActionPlan">
+                Specify Action Plan
+            </label>
+
+            <input
+                type="text"
+                id="customActionPlan"
+                name="customActionPlan"
+                placeholder="Enter custom action plan"
+            >
 
         </div>
 
@@ -637,24 +814,40 @@
                     Select responsibility
                 </option>
 
-                <option value="Maintenance">
-                    Maintenance
+                <option value="Pest Control Team">
+                    Pest Control Team
                 </option>
 
                 <option value="Housekeeping">
                     Housekeeping
                 </option>
 
+                <option value="Maintenance">
+                    Maintenance
+                </option>
+
+                <option value="Engineering">
+                    Engineering
+                </option>
+
                 <option value="Operations">
                     Operations
+                </option>
+
+                <option value="Kitchen Team">
+                    Kitchen Team
                 </option>
 
                 <option value="Kitchen">
                     Kitchen
                 </option>
 
-                <option value="Engineering">
-                    Engineering
+                <option value="Facility Management">
+                    Facility Management
+                </option>
+
+                <option value="Client Team">
+                    Client Team
                 </option>
 
                 <option value="Other">
@@ -662,6 +855,26 @@
                 </option>
 
             </select>
+
+        </div>
+
+
+        <div
+            id="customResponsibilityContainer"
+            class="form-group"
+            hidden
+        >
+
+            <label for="customResponsibility">
+                Specify Responsibility
+            </label>
+
+            <input
+                type="text"
+                id="customResponsibility"
+                name="customResponsibility"
+                placeholder="Enter custom responsibility"
+            >
 
         </div>
 
@@ -717,16 +930,32 @@
                     Open
                 </option>
 
-                <option value="WIP">
-                    WIP
+                <option value="In Progress">
+                    In Progress
+                </option>
+
+                <option value="Pending Client Action">
+                    Pending Client Action
+                </option>
+
+                <option value="On Hold">
+                    On Hold
+                </option>
+
+                <option value="Resolved">
+                    Resolved
                 </option>
 
                 <option value="Closed">
                     Closed
                 </option>
 
-                <option value="On Hold">
-                    On Hold
+                <option value="Reopened">
+                    Reopened
+                </option>
+
+                <option value="WIP">
+                    WIP
                 </option>
 
             </select>
@@ -878,22 +1107,6 @@
         </div>
 
     </section>
-
-
-    <!-- Reset -->
-
-    <div class="reset-section">
-
-        <button
-            type="button"
-            id="resetInspectionButton"
-            class="btn btn-danger"
-            hidden
-        >
-            Reset Inspection
-        </button>
-
-    </div>
 
 
     <!-- =====================================================
